@@ -11,4 +11,7 @@
         <servlet-name>FilmsCatalogService</servlet-name>
         <url-pattern>/FilmsCatalog/FilmsCatalogService</url-pattern>
     </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>FilmsCatalog.html</welcome-file>
+    </welcome-file-list>
 </web-app>
