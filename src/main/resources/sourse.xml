@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><class>
+
+    
+    <film filmsName="Din don">
+        <filmsName> Dim don</filmsName>
+        <author>Kim</author>
+
+        <style>Comedia</style>
+        <dateOfRelease>1999</dateOfRelease>
+    </film>
+
+
+    <film filmsName="Sunny smile">
+        <filmsName> Name1</filmsName>
+        <author>Karl</author>
+
+        <style>Horror</style>
+        <dateOfRelease>2002</dateOfRelease>>
+    </film>
+
+    <film filmsName="Cat's house">
+        <filmsName> Name1</filmsName>
+        <author>Artur</author>
+
+        <style>Musical</style>
+        <dateOfRelease>1994</dateOfRelease>>
+    </film>
+
+    <film filmsName="Happy day">
+        <filmsName> Name1</filmsName>
+        <author>Stiv</author>
+
+        <style>Triller</style>
+        <dateOfRelease>2001</dateOfRelease>>
+    </film>
+
+    <film filmsName="Sunny day">
+        <filmsName> Name1</filmsName>
+        <author>Jhon</author>
+
+        <style>Horror</style>
+        <dateOfRelease>2003</dateOfRelease>>
+    </film>
+    <film filmsName="Happy weekends">
+        <filmsName> Name1</filmsName>
+        <author>Lany</author>
+
+        <style>Triller</style>
+        <dateOfRelease>1997</dateOfRelease>>
+    </film>
+
+
+</class>
