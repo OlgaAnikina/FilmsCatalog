@@ -26,9 +26,7 @@ import java.util.Comparator;
 public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements FilmsCatalogService {
     ClassLoader classLoader = getClass().getClassLoader();
 
-   private String path = classLoader.getResource("/sourse.xml").getPath();
-  //private static String path = "./sourse.xml";
-  //  private String path = "C:\\Users\\mik\\Documents\\IdeaProject\\FilmsCatalog\\resourse\\sourse.xml";
+    private String path = classLoader.getResource("/sourse.xml").getPath();
     private Document doc;
 
     public FilmsCatalogServiceImpl() {
@@ -46,7 +44,7 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
             e.printStackTrace();
         }
         doc.getDocumentElement().normalize();
-        System.out.println("doc  " +   doc);
+        System.out.println("doc  " + doc);
 
 
     }
@@ -63,11 +61,13 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                   System.out.println("Film filmsName : " + eElement.getAttribute("filmsName"));
-                   System.out.println("firstPoint : " + eElement.getElementsByTagName("author").item(0).getTextContent());
-                   System.out.println("endPoint  : "  + eElement.getElementsByTagName("style").item(0).getTextContent());
-                   System.out.println("Time in the way : " + eElement.getElementsByTagName("dateOfRelease").item(0).getTextContent());
-                    filmsName = eElement.getAttribute("filmsName");
+                   /* System.out.println("Film filmsName : " + eElement.getAttribute("filmsName"));
+                    System.out.println("firstPoint : " + eElement.getElementsByTagName("author").item(0).getTextContent());
+                    System.out.println("endPoint  : " + eElement.getElementsByTagName("style").item(0).getTextContent());
+                    System.out.println("Time in the way : " + eElement.getElementsByTagName("dateOfRelease").item(0).getTextContent());
+                    */
+                   //filmsName = eElement.getAttribute("filmsName");
+                    filmsName = eElement.getElementsByTagName("filmsName").item(0).getTextContent();
                     author = eElement.getElementsByTagName("author").item(0).getTextContent();
                     style = eElement.getElementsByTagName("style").item(0).getTextContent();
                     dateOfRelease = eElement.getElementsByTagName("dateOfRelease").item(0).getTextContent();
@@ -110,27 +110,29 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
 
             Element newBus = doc.createElement("film");
 
-            newBus.setAttribute("filmsName", String.valueOf(films[0]));
+           // newBus.setAttribute("filmsName", String.valueOf(films[0]));
 
+            Element filmsName = doc.createElement("filmsName");
+            filmsName.setTextContent(films[0]);
             Element departure = doc.createElement("author");
             departure.setTextContent(films[1]);
             Element destination = doc.createElement("style");
             destination.setTextContent(films[2]);
             Element travelTime = doc.createElement("dateOfRelease");
             travelTime.setTextContent(films[3]);
-            //System.out.println("In TRY!");
 
+
+            newBus.appendChild(filmsName);
             newBus.appendChild(departure);
             newBus.appendChild(destination);
             newBus.appendChild(travelTime);
 
             doc.getElementsByTagName("class").item(0).appendChild(newBus);
             doc.normalizeDocument();
-            // System.out.println(doc);
+
             string = parse();
             System.out.println(string);
-            //Element root = doc.getDocumentElement();
-            //root.appendChild(newBus);
+
 
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -142,18 +144,6 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
             string = parse();
             System.out.println(string);
 
-            /*
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            Result output = new StreamResult(new File(path));
-            Source input = new DOMSource(doc);
-            */
-            //transformer.transform(input, output);
-            //transformer.transform(source, result);
-
-
-            //TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            //Transformer transformer = transformerFactory.newTransformer();
-            //DOMSource source = new DOMSource(doc);
 
         } catch (TransformerConfigurationException e) {
             e.printStackTrace();
@@ -187,7 +177,10 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
     }
 
     public String separateLine(Element eElement) {
-        return eElement.getAttribute("filmsName") + "-"
+        return eElement.getElementsByTagName("filmsName")
+                .item(0)
+                .getTextContent()
+                + "-"
                 + eElement.getElementsByTagName("author")
                 .item(0)
                 .getTextContent()
@@ -216,10 +209,10 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
     }
 
     public String delRow(String del) {
-        // System.out.println("Servers string!" + del);
         try {
             XPath xpath = XPathFactory.newInstance().newXPath();
             Node node = (Node) xpath.evaluate("//*[@filmsName=" + del + "]", doc, XPathConstants.NODE);
+            System.out.println("in del row : " + node.getTextContent());
             doc.getElementsByTagName("class").item(0).removeChild(node);
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             Result output = new StreamResult(new File(path));
@@ -258,7 +251,7 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
         return showPage(number);
     }
 
-    public String sortByComporator(String list, Comparator comparator){
+    public String sortByComporator(String list, Comparator comparator) {
         String resStr;
         Film ss = new Film();
         Film tmp = new Film();
@@ -313,7 +306,6 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
 
     public String sortEndPoint(String result) {
         String resStr;
-
 
 
         Film ss = new Film();

@@ -19,7 +19,7 @@
     </film>
 
     <film filmsName="Cat's house">
-        <filmsName> Name1</filmsName>
+        <filmsName> Name2</filmsName>
         <author>Artur</author>
 
         <style>Musical</style>
@@ -27,7 +27,7 @@
     </film>
 
     <film filmsName="Happy day">
-        <filmsName> Name1</filmsName>
+        <filmsName> Name3</filmsName>
         <author>Stiv</author>
 
         <style>Triller</style>
@@ -35,14 +35,14 @@
     </film>
 
     <film filmsName="Sunny day">
-        <filmsName> Name1</filmsName>
+        <filmsName> Name4</filmsName>
         <author>Jhon</author>
 
         <style>Horror</style>
         <dateOfRelease>2003</dateOfRelease>>
     </film>
     <film filmsName="Happy weekends">
-        <filmsName> Name1</filmsName>
+        <filmsName> Name5</filmsName>
         <author>Lany</author>
 
         <style>Triller</style>

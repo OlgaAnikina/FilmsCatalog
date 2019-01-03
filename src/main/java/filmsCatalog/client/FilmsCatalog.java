@@ -23,7 +23,6 @@ import java.util.List;
 
 public class FilmsCatalog extends DialogBox implements EntryPoint {
     private int flag = 0;
-    private Film tmp = new Film();
     private int count = 0;
     private ArrayList<Film> arrFilms = new ArrayList<Film>();
     private ListDataProvider<Film> dataProvider = new ListDataProvider<Film>(arrFilms);
@@ -61,7 +60,7 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
                 = new TextColumn<Film>() {
             @Override
             public String getValue(Film object) {
-                return  object.getDateOfRelease();
+                return object.getDateOfRelease();
             }
         };
         table.addColumn(dateOfRelease, "Date of release");
@@ -73,10 +72,10 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
                     public void onSelectionChange(SelectionChangeEvent event) {
                         Film selected = selectionModel.getSelectedObject();
                         if (selected != null) {
-                            Window.alert(   "You want to delete: " + selected.getDateOfRelease());
+                            Window.alert("You want to delete: " + selected.getDateOfRelease());
                             String res = count + "/" + selected.getDateOfRelease();
-                            // Window.alert(res);
-                            FilmsCatalogService.App.getInstance().nextDel(res, new MyAsyncCallback(table/*,selected*/, arrFilms, dataProvider));
+                            FilmsCatalogService.App.getInstance().nextDel(res,
+                                    new MyAsyncCallback(table/*,selected*/, arrFilms, dataProvider));
 
                         }
                     }
@@ -95,6 +94,7 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         final Button next = new Button("Next");
         final Button back = new Button("Back");
         final Label sortText = new Label("Choose one of sorts method:");
+
         DOM.setElementAttribute(add.getElement(), "id", "my-button-id");
         DOM.setElementAttribute(next.getElement(), "id", "my-button-id1");
         DOM.setElementAttribute(sortDeparture.getElement(), "id", "my-button-id");
@@ -104,7 +104,6 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         DOM.setElementAttribute(back.getElement(), "id", "my-button-id1");
 
         HorizontalPanel panel = new HorizontalPanel();
-
 
         panel.setWidth("300");
         panel.add(back);
@@ -127,35 +126,38 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         panelWithTable.add(panel);
         RootPanel.get().add(panelWithTable);
 
-
         next.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-
                 count++;
 
                 String countStr = "" + count;
-                if (flag == 0) {
-                    //  Window.alert("Flag = " + flag);
-                    FilmsCatalogService.App.getInstance().nextPage(countStr, new MyAsyncCallback(table, arrFilms, dataProvider));
+                switch (flag) {
+                    case 0:
+                        FilmsCatalogService.App.getInstance().nextPage(countStr,
+                                new MyAsyncCallback(table, arrFilms, dataProvider));
+                        break;
+                    case 1:
+                        FilmsCatalogService.App.getInstance().nextPageSortNum(countStr,
+                                new MyAsyncCallback(table, arrFilms, dataProvider));
+                        break;
+                    case 2:
+                        FilmsCatalogService.App.getInstance().nextSortTime(countStr,
+                                new MyAsyncCallback(table, arrFilms, dataProvider));
+                        break;
+                    case 3:
+                        FilmsCatalogService.App.getInstance().nextSortPoint(countStr,
+                                new MyAsyncCallback(table, arrFilms, dataProvider));
+                        break;
+                    case 4:
+                        FilmsCatalogService.App.getInstance().nextSortEndPoint(countStr,
+                                new MyAsyncCallback(table, arrFilms, dataProvider));
+                        break;
+                    default:
+                        Window.alert("Error message.");
+                        break;
                 }
-                if (flag == 1) {
-                    //  Window.alert("Flag = " + flag);
-                    FilmsCatalogService.App.getInstance().nextPageSortNum(countStr, new MyAsyncCallback(table, arrFilms, dataProvider));
-                }
-                if (flag == 2) {
-                    FilmsCatalogService.App.getInstance().nextSortTime(countStr, new MyAsyncCallback(table, arrFilms, dataProvider));
-                }
-                if (flag == 3) {
-                    FilmsCatalogService.App.getInstance().nextSortPoint(countStr, new MyAsyncCallback(table, arrFilms, dataProvider));
-                }
-                if (flag == 4) {
-                    FilmsCatalogService.App.getInstance().nextSortEndPoint(countStr, new MyAsyncCallback(table, arrFilms, dataProvider));
-                }
-
             }
-
-
         });
         back.addClickHandler(new ClickHandler() {
             @Override
@@ -167,19 +169,24 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
                     count++;
                 } else {
                     if (flag == 0) {
-                        FilmsCatalogService.App.getInstance().previousPage(countStr, new MyAsyncCallback(table, arrFilms, dataProvider));
+                        FilmsCatalogService.App.getInstance().previousPage(countStr,
+                                new MyAsyncCallback(table, arrFilms, dataProvider));
                     }
                     if (flag == 1) {
-                        FilmsCatalogService.App.getInstance().nextPageSortNum(countStr, new MyAsyncCallback(table, arrFilms, dataProvider));
+                        FilmsCatalogService.App.getInstance().nextPageSortNum(countStr,
+                                new MyAsyncCallback(table, arrFilms, dataProvider));
                     }
                     if (flag == 2) {
-                        FilmsCatalogService.App.getInstance().nextSortTime(countStr, new MyAsyncCallback(table, arrFilms, dataProvider));
+                        FilmsCatalogService.App.getInstance().nextSortTime(countStr,
+                                new MyAsyncCallback(table, arrFilms, dataProvider));
                     }
                     if (flag == 3) {
-                        FilmsCatalogService.App.getInstance().nextSortPoint(countStr, new MyAsyncCallback(table, arrFilms, dataProvider));
+                        FilmsCatalogService.App.getInstance().nextSortPoint(countStr,
+                                new MyAsyncCallback(table, arrFilms, dataProvider));
                     }
                     if (flag == 4) {
-                        FilmsCatalogService.App.getInstance().nextSortEndPoint(countStr, new MyAsyncCallback(table, arrFilms, dataProvider));
+                        FilmsCatalogService.App.getInstance().nextSortEndPoint(countStr,
+                                new MyAsyncCallback(table, arrFilms, dataProvider));
                     }
 
                 }
@@ -190,7 +197,8 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
             public void onClick(ClickEvent event) {
                 flag = 3;
                 String str = "" + count;// +  tmp.listParseToStr(arrFilms);
-                FilmsCatalogService.App.getInstance().nextSortPoint(str, new MyAsyncCallback(table, arrFilms, dataProvider));
+                FilmsCatalogService.App.getInstance().nextSortPoint(str,
+                        new MyAsyncCallback(table, arrFilms, dataProvider));
             }
         });
         sortArrival.addClickHandler(new ClickHandler() {
@@ -198,11 +206,9 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
             public void onClick(ClickEvent event) {
                 flag = 4;
                 String str = "" + count;// +  tmp.listParseToStr(arrFilms);
-                FilmsCatalogService.App.getInstance().nextSortEndPoint(str, new MyAsyncCallback(table, arrFilms, dataProvider));
-/*
-                String str = tmp.listParseToStr(arrFilms);
-                FilmsCatalogService.App.getInstance().sortEndPoint(str, new MyAsyncCallback(table, arrFilms,  dataProvider));
-*/
+                FilmsCatalogService.App.getInstance().nextSortEndPoint(str,
+                        new MyAsyncCallback(table, arrFilms, dataProvider));
+
             }
         });
         sort.addClickHandler(new ClickHandler() {
@@ -210,15 +216,16 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
             public void onClick(ClickEvent event) {
                 flag = 1;
                 String str = "" + count;// +  tmp.listParseToStr(arrFilms);
-                FilmsCatalogService.App.getInstance().nextPageSortNum(str, new MyAsyncCallback(table, arrFilms, dataProvider));
+                FilmsCatalogService.App.getInstance().nextPageSortNum(str,
+                        new MyAsyncCallback(table, arrFilms, dataProvider));
 
             }
         });
         add.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
                 FilmsCatalog myDialog = FilmsCatalog.getInstance();
-                int left = Window.getClientWidth() / 4;
-                int top = Window.getClientHeight() / 4;
+                int left = Window.getClientWidth() / 2;
+                int top = Window.getClientHeight() / 2;
                 myDialog.setPopupPosition(left, top);
                 myDialog.show();
 
@@ -231,7 +238,8 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
                 flag = 2;
                 //String str = tmp.listParseToStr(arrFilms);
                 String str = "" + count;
-                FilmsCatalogService.App.getInstance().nextSortTime(str, new MyAsyncCallback(table, arrFilms, dataProvider));
+                FilmsCatalogService.App.getInstance().nextSortTime(str,
+                        new MyAsyncCallback(table, arrFilms, dataProvider));
             }
         });
 
@@ -241,7 +249,12 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         setText("My First Dialog");
         TextBox filmsname = new TextBox();
         TextBox authors = new TextBox();
-        TextBox styles = new TextBox();
+        ListBox styles = new ListBox();
+        styles.addItem("Horror");
+        styles.addItem("Comedy");
+        styles.addItem("Sitcom");
+        styles.addItem("Drama");
+        styles.setVisibleItemCount(4);
         TextBox dateOfrelease = new TextBox();
         setAnimationEnabled(true);
 
@@ -250,19 +263,30 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         Button ok = new Button("OK");
         ok.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                String res;
-                res = filmsname.getText() + "-" + authors.getText() + "-" + styles.getText() + "-" + dateOfrelease.getText();
+                if(filmsname.getText().equals("")) {
+                    Window.alert("Wrong film's name");
+                } else if(authors.getText().equals("")) {
+                    Window.alert("Wrong  authors");
+                } else if(Integer.parseInt(dateOfrelease.getText()) > 0){
+                    Window.alert("Wrong data of release");
+                }
+                else {
+                    String res;
+                    res = filmsname.getText() + "-" + authors.getText() + "-" + styles.getSelectedItemText()
+                            + "-" + dateOfrelease.getText();
 
-                CellTable<Film> buses = FilmsCatalog.getInstance().getTable();
-                Film CONTACTS = new Film(filmsname.getText(), authors.getText(), dateOfrelease.getText(), styles.getText());
+                    CellTable<Film> buses = FilmsCatalog.getInstance().getTable();
+                    Film CONTACTS = new Film(filmsname.getText(), authors.getText(), dateOfrelease.getText(),
+                            styles.getSelectedItemText());
 
-                arrFilms.add(CONTACTS);
+                    arrFilms.add(CONTACTS);
 
-                String parseRes = count + "/" + res;
-                FilmsCatalogService.App.getInstance().nextAddBus(parseRes, new MyAsyncCallback(table, arrFilms, dataProvider));
+                    String parseRes = count + "/" + res;
+                    FilmsCatalogService.App.getInstance().nextAddBus(parseRes,
+                            new MyAsyncCallback(table, arrFilms, dataProvider));
 
-                FilmsCatalog.this.hide();
-
+                    FilmsCatalog.this.hide();
+                }
             }
         });
         Label labels = new Label("Add information about your bus.");
@@ -277,13 +301,14 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         panel1.getElement().getStyle().setBorderWidth(1, Style.Unit.PX);
 
         panel1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        panel1.add(labels);
+       panel1.add(labels);
         panel1.add(label1);
         panel1.add(filmsname);
         panel1.add(author1);
         panel1.add(authors);
-        panel1.add(style1);
         panel1.add(styles);
+        panel1.add(style1);
+
         panel1.add(dateOfRelease1);
         panel1.add(dateOfrelease);
         panel1.add(ok);
@@ -300,13 +325,10 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
     private static FilmsCatalog filmsCatalog;
 
     public static FilmsCatalog getInstance() {
-
         return filmsCatalog;
     }
 
     public void onModuleLoad() {
-
-
     }
 
     private static class MyAsyncCallback implements AsyncCallback<String> {
@@ -322,26 +344,19 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         }
 
         public void onSuccess(String result) {
-
-
             if (result == null) {
                 Window.alert("You don't have anought page");
             } else {
                 Film ss = new Film();
                 filmList.clear();
                 filmList.addAll(ss.parseIntoList(result));
-
-
                 dataProvider.refresh();
                 table.setRowCount(filmList.size());
                 table.redraw();
             }
-
         }
 
         public void onFailure(Throwable throwable) {
-
-
         }
     }
 
@@ -358,20 +373,14 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         }
 
         public void onSuccess(String result) {
-
             Film ss = new Film();
-            Window.alert(result);
-
+            //  Window.alert(result);
             dataProvider.refresh();
             table.setRowCount(filmList.size());
             table.redraw();
-
-
         }
 
         public void onFailure(Throwable throwable) {
-
-
         }
     }
 
@@ -390,12 +399,8 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         }
 
         public void onSuccess(String result) {
-
-
             Film ss = new Film();
-
             filmList.clear();
-
             filmList.addAll(ss.parseIntoList(result));
 
             dataProvider.refresh();
@@ -426,9 +431,6 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         public void onSuccess(String result) {
 
             Film ss = new Film();
-            //   Window.alert(result);
-
-
             dataProvider.refresh();
             table.setRowCount(filmList.size());
             table.redraw();
@@ -436,7 +438,6 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
 
         public void onFailure(Throwable throwable) {
             Window.alert("Sorry!");
-
         }
     }
 
@@ -455,7 +456,6 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         }
 
         public void onSuccess(String result) {
-
             Film ss = new Film();
             filmList.clear();
             // Collections.sort(filmList, Film.compareByTime);

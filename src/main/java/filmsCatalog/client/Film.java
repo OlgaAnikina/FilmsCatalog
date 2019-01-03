@@ -9,9 +9,7 @@ public class Film implements Serializable {
     private  String author;
     private  String dateOfRelease;
     private String style;
- //   private ArrayList<Film> statet;
 
-  //  public Film (){}
     public Film(String dateOfRelease, String author, String filmsName, String style) {
         this.dateOfRelease = dateOfRelease;
         this.author = author;
