@@ -72,8 +72,10 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
                     public void onSelectionChange(SelectionChangeEvent event) {
                         Film selected = selectionModel.getSelectedObject();
                         if (selected != null) {
-                            Window.alert("You want to delete: " + selected.getDateOfRelease());
-                            String res = count + "/" + selected.getDateOfRelease();
+                            Window.alert("You want to delete film: " + selected.getFilmsName());
+                          //  String res = count + "/" + selected.getDateOfRelease();
+                            String res = count + "/" + selected.getFilmsName();
+                            System.out.println(" res  : " + selected.getFilmsName());
                             FilmsCatalogService.App.getInstance().nextDel(res,
                                     new MyAsyncCallback(table/*,selected*/, arrFilms, dataProvider));
 

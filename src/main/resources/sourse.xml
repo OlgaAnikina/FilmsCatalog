@@ -1,50 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?><class>
 
     
-    <film filmsName="Din don">
+    <film >
         <filmsName> Dim don</filmsName>
         <author>Kim</author>
-
         <style>Comedia</style>
         <dateOfRelease>1999</dateOfRelease>
     </film>
 
 
-    <film filmsName="Sunny smile">
-        <filmsName> Name1</filmsName>
+    <film >
+        <filmsName>Sunny smile</filmsName>
         <author>Karl</author>
 
         <style>Horror</style>
         <dateOfRelease>2002</dateOfRelease>>
     </film>
 
-    <film filmsName="Cat's house">
-        <filmsName> Name2</filmsName>
+    <film >
+        <filmsName>Cat's house</filmsName>
         <author>Artur</author>
-
         <style>Musical</style>
         <dateOfRelease>1994</dateOfRelease>>
     </film>
 
-    <film filmsName="Happy day">
-        <filmsName> Name3</filmsName>
+    <film >
+        <filmsName>Happy day</filmsName>
         <author>Stiv</author>
 
         <style>Triller</style>
         <dateOfRelease>2001</dateOfRelease>>
     </film>
 
-    <film filmsName="Sunny day">
-        <filmsName> Name4</filmsName>
+    <film >
+        <filmsName>Sunny day</filmsName>
         <author>Jhon</author>
-
         <style>Horror</style>
         <dateOfRelease>2003</dateOfRelease>>
     </film>
-    <film filmsName="Happy weekends">
-        <filmsName> Name5</filmsName>
-        <author>Lany</author>
 
+    <film >
+        <filmsName>Happy weekends</filmsName>
+        <author>Lany</author>
+        <style>Triller</style>
+        <dateOfRelease>1997</dateOfRelease>>
+    </film>
+    <film >
+        <filmsName>Sunny day</filmsName>
+        <author>Lack</author>
+        <style>Triller</style>
+        <dateOfRelease>1993</dateOfRelease>>
+    </film>
+
+    <film >
+        <filmsName>Run and stop</filmsName>
+        <author>Clark</author>
         <style>Triller</style>
         <dateOfRelease>1997</dateOfRelease>>
     </film>

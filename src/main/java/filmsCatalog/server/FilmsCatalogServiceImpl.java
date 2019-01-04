@@ -14,10 +14,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +26,6 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
     private Document doc;
 
     public FilmsCatalogServiceImpl() {
-
         try {
             File inputFile = new File(path);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -44,9 +39,6 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
             e.printStackTrace();
         }
         doc.getDocumentElement().normalize();
-        System.out.println("doc  " + doc);
-
-
     }
 
     public String addBuss() {
@@ -55,18 +47,13 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
         Film film = new Film();
         try {
             NodeList nList = doc.getElementsByTagName("film");
+            System.out.println("doc path = " + doc.getDocumentURI());
 
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
-
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                   /* System.out.println("Film filmsName : " + eElement.getAttribute("filmsName"));
-                    System.out.println("firstPoint : " + eElement.getElementsByTagName("author").item(0).getTextContent());
-                    System.out.println("endPoint  : " + eElement.getElementsByTagName("style").item(0).getTextContent());
-                    System.out.println("Time in the way : " + eElement.getElementsByTagName("dateOfRelease").item(0).getTextContent());
-                    */
-                   //filmsName = eElement.getAttribute("filmsName");
+
                     filmsName = eElement.getElementsByTagName("filmsName").item(0).getTextContent();
                     author = eElement.getElementsByTagName("author").item(0).getTextContent();
                     style = eElement.getElementsByTagName("style").item(0).getTextContent();
@@ -75,14 +62,11 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
                     film.setFilmsName(filmsName);
                     film.setStyle(style);
                     film.setAuthor(author);
-
-
                     res = filmsName + "-" + author + "-" + style + "-" + dateOfRelease;
                     result = result + res + "!";
-                    System.out.println(result);
+
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,13 +89,10 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
         String films[] = str.split("-");
         String string = parse();
         String data[] = string.split("!");
-        System.out.println(films);
 
         try {
 
             Element newBus = doc.createElement("film");
-
-           // newBus.setAttribute("filmsName", String.valueOf(films[0]));
 
             Element filmsName = doc.createElement("filmsName");
             filmsName.setTextContent(films[0]);
@@ -122,7 +103,6 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
             Element travelTime = doc.createElement("dateOfRelease");
             travelTime.setTextContent(films[3]);
 
-
             newBus.appendChild(filmsName);
             newBus.appendChild(departure);
             newBus.appendChild(destination);
@@ -132,8 +112,6 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
             doc.normalizeDocument();
 
             string = parse();
-            System.out.println(string);
-
 
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -204,6 +182,8 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
 
     public String nextDel(String str) {
         String[] list = str.split("/");
+        System.out.println("next del str : " + str);
+        System.out.println("List 1 : " + list[1]);
         String sort = delRow(list[1]);
         String number = list[0] + "/" + sort;
         return showPage(number);
@@ -211,22 +191,34 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
 
     public String delRow(String del) {
         try {
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            Node node = (Node) xpath.evaluate("//*[@filmsName=" + del + "]", doc, XPathConstants.NODE);
-            System.out.println("in del row : " + node.getTextContent());
-            doc.getElementsByTagName("class").item(0).removeChild(node);
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            Result output = new StreamResult(new File(path));
-            Source input = new DOMSource(doc);
-            transformer.transform(input, output);
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
+            File inputFile = new File(path);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+
+            Node node = null;
+            NodeList films = doc.getElementsByTagName("filmsName");
+
+            for (int count = 0; count < films.getLength(); count++) {
+                Node currentFilm = films.item(count);
+
+                if (currentFilm.getTextContent().equals(del)) {
+                    node = currentFilm;
+                }
+            }
+            if (node == null) {
+                System.out.println(" You can't delete this");
+            } else {
+                node.getParentNode().getParentNode().removeChild(node.getParentNode());
+
+                Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                Result output = new StreamResult(new File(path));
+                Source input = new DOMSource(doc);
+                transformer.transform(input, output);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
         return addBuss();
     }
 
@@ -366,7 +358,6 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
         Film ss = new Film();
         String result = "";
 
-
         if (number * 5 <= data.length) {
             for (int i = (number - 1) * 5; i < number * 5; i++) {
 
@@ -374,7 +365,6 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
                     result += data[i] + "!";
                 } else {
                     result += data[i];
-
                 }
             }
         } else {
@@ -383,12 +373,10 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
                 if (i != data.length - 1) {
                     result += data[i] + "!";
                 } else {
-
                     result += data[i];
                 }
             }
         }
-
         if (number >= data.length / 5 + 2) {
             result = null;
         }
