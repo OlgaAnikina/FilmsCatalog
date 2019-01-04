@@ -105,6 +105,7 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
         String films[] = str.split("-");
         String string = parse();
         String data[] = string.split("!");
+        System.out.println(films);
 
         try {
 
@@ -357,28 +358,18 @@ public class FilmsCatalogServiceImpl extends RemoteServiceServlet implements Fil
     }
 
     public String showPage(String numberStr) {
-        // String list = addBuss();
-        System.out.println("string in swow page " + numberStr);
         String[] tmp = numberStr.split("/");
-
         int number = Integer.parseInt(tmp[0]);
-
         String list = tmp[1];
-        System.out.println("It is lisrt" + list);
-        System.out.println(number);
-        System.out.println(list.toString());
-
-
         String str = parse();
         String[] data = list.split("!");
         Film ss = new Film();
         String result = "";
 
-        System.out.println(data.length);
+
         if (number * 5 <= data.length) {
             for (int i = (number - 1) * 5; i < number * 5; i++) {
 
-                System.out.println(number);
                 if (i != number * 5 - 1) {
                     result += data[i] + "!";
                 } else {

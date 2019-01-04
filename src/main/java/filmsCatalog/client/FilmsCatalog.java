@@ -263,14 +263,11 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         Button ok = new Button("OK");
         ok.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                if(filmsname.getText().equals("")) {
+                if (filmsname.getText().equals("")) {
                     Window.alert("Wrong film's name");
-                } else if(authors.getText().equals("")) {
+                } else if (authors.getText().equals("")) {
                     Window.alert("Wrong  authors");
-                } else if(Integer.parseInt(dateOfrelease.getText()) > 0){
-                    Window.alert("Wrong data of release");
-                }
-                else {
+                } else if (Integer.parseInt(dateOfrelease.getText()) > 0) {
                     String res;
                     res = filmsname.getText() + "-" + authors.getText() + "-" + styles.getSelectedItemText()
                             + "-" + dateOfrelease.getText();
@@ -286,6 +283,9 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
                             new MyAsyncCallback(table, arrFilms, dataProvider));
 
                     FilmsCatalog.this.hide();
+
+                } else {
+                    Window.alert("Wrong data of release");
                 }
             }
         });
@@ -301,7 +301,7 @@ public class FilmsCatalog extends DialogBox implements EntryPoint {
         panel1.getElement().getStyle().setBorderWidth(1, Style.Unit.PX);
 
         panel1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-       panel1.add(labels);
+        panel1.add(labels);
         panel1.add(label1);
         panel1.add(filmsname);
         panel1.add(author1);
